@@ -1,5 +1,5 @@
-import React, { InputHTMLAttributes, forwardRef } from 'react';
-import { LucideIcon } from 'lucide-react';
+import { type InputHTMLAttributes, forwardRef } from 'react';
+import { type LucideIcon } from 'lucide-react';
 import { cn } from './Button';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
