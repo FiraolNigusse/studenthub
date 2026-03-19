@@ -42,8 +42,11 @@ const initialData: ResumeData = {
   ]
 };
 
+export type TemplateType = 'modern' | 'classic' | 'minimal';
+
 export const useResume = () => {
   const [data, setData] = useState<ResumeData>(initialData);
+  const [template, setTemplate] = useState<TemplateType>('modern');
 
   const updatePersonalInfo = useCallback((field: keyof PersonalInfo, value: string) => {
     setData(prev => ({
@@ -118,6 +121,8 @@ export const useResume = () => {
 
   return {
     data,
+    template,
+    setTemplate,
     updatePersonalInfo,
     addEducation,
     updateEducation,

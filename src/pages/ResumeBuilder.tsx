@@ -5,7 +5,6 @@ import {
   GraduationCap,
   Briefcase,
   Terminal,
-  Award,
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
@@ -23,6 +22,8 @@ type Section = 'personal' | 'education' | 'experience' | 'skills';
 const ResumeBuilder: React.FC = () => {
   const {
     data,
+    template,
+    setTemplate,
     updatePersonalInfo,
     addEducation,
     updateEducation,
@@ -92,7 +93,7 @@ const ResumeBuilder: React.FC = () => {
 
   return (
     <div className="container mx-auto px-6 py-24 animate-fade-in max-w-[1600px]">
-      <div className="text-center mb-24 max-w-3xl mx-auto">
+      <div className="text-center mb-20 max-w-3xl mx-auto">
         <h1 className="text-5xl lg:text-7xl font-display font-black mb-8 tracking-tighter text-slate-900 leading-tight">
           Resume <span className="gradient-text">Builder</span>
         </h1>
@@ -101,10 +102,10 @@ const ResumeBuilder: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-5 gap-12 items-start h-full">
+      <div className="grid lg:grid-cols-5 gap-12 items-start h-full pb-20">
         {/* Editor sidebar + Form */}
         <div className="lg:col-span-2 space-y-8 h-full flex flex-col">
-          <Card className="p-10 ring-1 ring-slate-100 shadow-xl overflow-hidden rounded-[3rem] isolate flex-1">
+          <Card className="p-10 ring-1 ring-slate-100 shadow-[0_40px_80px_rgba(0,0,0,0.06)] overflow-hidden rounded-[3rem] isolate flex-1">
              <div className="flex bg-slate-100/50 p-2 rounded-[2rem] gap-2 mb-12">
                 {sections.map((section) => (
                   <button 
@@ -133,7 +134,7 @@ const ResumeBuilder: React.FC = () => {
 
              <div className="flex justify-between items-center mt-12 pt-12 border-t border-slate-50">
                 <Button variant="ghost" className="h-14 px-8 rounded-2xl gap-3 font-bold" onClick={prevSection} disabled={activeSection === sections[0].id}>
-                  <ChevronLeft size={20} /> Back
+                   <ChevronLeft size={20} /> Back
                 </Button>
                 <div className="flex gap-2">
                    {sections.map(s => (
@@ -148,7 +149,7 @@ const ResumeBuilder: React.FC = () => {
         </div>
 
         {/* Live Preview */}
-        <ResumePreview data={data} />
+        <ResumePreview data={data} template={template} setTemplate={setTemplate} />
       </div>
     </div>
   );
