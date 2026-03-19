@@ -1,0 +1,132 @@
+import { useState, useCallback } from 'react';
+import { 
+  type PersonalInfo, 
+  type Education, 
+  type Experience, 
+  type Skill, 
+  type ResumeData 
+} from '../types/resume';
+
+const initialData: ResumeData = {
+  personalInfo: {
+    fullName: 'Alexander Student',
+    email: 'alex.student@university.edu',
+    phone: '+1 555-0123',
+    location: 'San Francisco, CA'
+  },
+  education: [
+    {
+      id: '1',
+      school: 'Stanford University',
+      degree: 'B.S. in Computer Science',
+      year: '2022 - Present',
+      gpa: '3.95/4.0'
+    }
+  ],
+  experience: [
+    {
+      id: '1',
+      company: 'Google',
+      role: 'Summer Intern (SWE)',
+      duration: 'Summer 2025',
+      description: [
+        'Developed scalable backend infrastructure using Go and Kubernetes.',
+        'Optimized mission-critical API endpoints, reducing latency by 40%.'
+      ]
+    }
+  ],
+  skills: [
+    { id: '1', name: 'React', level: 'Expert' },
+    { id: '2', name: 'TypeScript', level: 'Advanced' },
+    { id: '3', name: 'Go', level: 'Intermediate' }
+  ]
+};
+
+export const useResume = () => {
+  const [data, setData] = useState<ResumeData>(initialData);
+
+  const updatePersonalInfo = useCallback((field: keyof PersonalInfo, value: string) => {
+    setData(prev => ({
+      ...prev,
+      personalInfo: { ...prev.personalInfo, [field]: value }
+    }));
+  }, []);
+
+  const addEducation = useCallback(() => {
+    const newItem: Education = {
+      id: Math.random().toString(36).substr(2, 9),
+      school: '',
+      degree: '',
+      year: '',
+      gpa: ''
+    };
+    setData(prev => ({ ...prev, education: [...prev.education, newItem] }));
+  }, []);
+
+  const updateEducation = useCallback((id: string, field: keyof Education, value: string) => {
+    setData(prev => ({
+      ...prev,
+      education: prev.education.map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  }, []);
+
+  const removeEducation = useCallback((id: string) => {
+    setData(prev => ({ ...prev, education: prev.education.filter(item => item.id !== id) }));
+  }, []);
+
+  const addExperience = useCallback(() => {
+    const newItem: Experience = {
+      id: Math.random().toString(36).substr(2, 9),
+      company: '',
+      role: '',
+      duration: '',
+      description: ['']
+    };
+    setData(prev => ({ ...prev, experience: [...prev.experience, newItem] }));
+  }, []);
+
+  const updateExperience = useCallback((id: string, field: keyof Experience, value: any) => {
+    setData(prev => ({
+      ...prev,
+      experience: prev.experience.map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  }, []);
+
+  const removeExperience = useCallback((id: string) => {
+    setData(prev => ({ ...prev, experience: prev.experience.filter(item => item.id !== id) }));
+  }, []);
+
+  const addSkill = useCallback(() => {
+    const newItem: Skill = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: '',
+      level: ''
+    };
+    setData(prev => ({ ...prev, skills: [...prev.skills, newItem] }));
+  }, []);
+
+  const updateSkill = useCallback((id: string, field: keyof Skill, value: string) => {
+    setData(prev => ({
+      ...prev,
+      skills: prev.skills.map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  }, []);
+
+  const removeSkill = useCallback((id: string) => {
+    setData(prev => ({ ...prev, skills: prev.skills.filter(item => item.id !== id) }));
+  }, []);
+
+  return {
+    data,
+    updatePersonalInfo,
+    addEducation,
+    updateEducation,
+    removeEducation,
+    addExperience,
+    updateExperience,
+    removeExperience,
+    addSkill,
+    updateSkill,
+    removeSkill
+  };
+};
