@@ -47,6 +47,14 @@ export type TemplateType = 'modern' | 'classic' | 'minimal';
 export const useResume = () => {
   const [data, setData] = useState<ResumeData>(initialData);
   const [template, setTemplate] = useState<TemplateType>('modern');
+  const [isPremium, setIsPremium] = useState<boolean>(() => {
+    return localStorage.getItem('studenthub_premium') === 'true';
+  });
+
+  const upgradeToPremium = useCallback(() => {
+    setIsPremium(true);
+    localStorage.setItem('studenthub_premium', 'true');
+  }, []);
 
   const updatePersonalInfo = useCallback((field: keyof PersonalInfo, value: string) => {
     setData(prev => ({
@@ -122,6 +130,8 @@ export const useResume = () => {
   return {
     data,
     template,
+    isPremium,
+    upgradeToPremium,
     setTemplate,
     updatePersonalInfo,
     addEducation,

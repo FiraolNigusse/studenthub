@@ -6,7 +6,8 @@ import {
   Briefcase,
   Terminal,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  ShieldCheck
 } from 'lucide-react';
 import Button, { cn } from '../components/ui/Button';
 import Card from '../components/ui/Card';
@@ -23,6 +24,8 @@ const ResumeBuilder: React.FC = () => {
   const {
     data,
     template,
+    isPremium,
+    upgradeToPremium,
     setTemplate,
     updatePersonalInfo,
     addEducation,
@@ -93,16 +96,23 @@ const ResumeBuilder: React.FC = () => {
 
   return (
     <div className="container mx-auto px-6 py-24 animate-fade-in max-w-[1600px]">
-      <div className="text-center mb-20 max-w-3xl mx-auto">
-        <h1 className="text-5xl lg:text-7xl font-display font-black mb-8 tracking-tighter text-slate-900 leading-tight">
-          Resume <span className="gradient-text">Builder</span>
-        </h1>
+      <div className="text-center mb-20 max-w-3xl mx-auto flex flex-col items-center gap-6">
+        <div className="flex gap-2">
+           <h1 className="text-5xl lg:text-7xl font-display font-black tracking-tighter text-slate-900 leading-tight">
+             Resume <span className="gradient-text">Builder</span>
+           </h1>
+           {isPremium && (
+              <div className="bg-primary-50 text-primary-600 px-3 py-1.5 rounded-xl h-fit border border-primary-100 flex items-center gap-1.5 text-[0.6rem] font-black uppercase tracking-widest translate-y-2">
+                 <ShieldCheck size={12} /> PRO
+              </div>
+           )}
+        </div>
         <p className="text-xl text-slate-500 font-medium leading-relaxed">
           Craft a professional, ATS-optimized resume in minutes with our specialized editor for students and graduates.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-5 gap-12 items-start h-full pb-20">
+      <div className="grid lg:grid-cols-5 gap-12 items-start h-full pb-20 isolate">
         {/* Editor sidebar + Form */}
         <div className="lg:col-span-2 space-y-8 h-full flex flex-col">
           <Card className="p-10 ring-1 ring-slate-100 shadow-[0_40px_80px_rgba(0,0,0,0.06)] overflow-hidden rounded-[3rem] isolate flex-1">
@@ -123,11 +133,16 @@ const ResumeBuilder: React.FC = () => {
              </div>
              
              <div className="min-h-[400px] py-6 animate-fade-in relative z-10 transition-all">
-                <div className="flex items-center gap-4 mb-10 pb-4 border-b border-slate-50">
-                  <Sparkles size={24} className="text-secondary-light" />
-                  <h3 className="text-2xl font-display font-black text-slate-800 tracking-tight uppercase tracking-[0.2em] text-sm">
-                    {sections.find(s => s.id === activeSection)?.name}
-                  </h3>
+                <div className="flex items-center justify-between mb-10 pb-4 border-b border-slate-50">
+                  <div className="flex items-center gap-4">
+                    <Sparkles size={24} className="text-secondary-light" />
+                    <h3 className="text-2xl font-display font-black text-slate-800 tracking-tight uppercase tracking-[0.2em] text-sm">
+                      {sections.find(s => s.id === activeSection)?.name}
+                    </h3>
+                  </div>
+                  {!isPremium && activeSection === 'experience' && (
+                    <span className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-amber-500 bg-amber-50 px-3 py-1 rounded-lg">Pro Feature</span>
+                  )}
                 </div>
                 {renderForm()}
              </div>
@@ -149,7 +164,13 @@ const ResumeBuilder: React.FC = () => {
         </div>
 
         {/* Live Preview */}
-        <ResumePreview data={data} template={template} setTemplate={setTemplate} />
+        <ResumePreview 
+          data={data} 
+          template={template} 
+          setTemplate={setTemplate} 
+          isPremium={isPremium}
+          onUpgrade={upgradeToPremium}
+        />
       </div>
     </div>
   );

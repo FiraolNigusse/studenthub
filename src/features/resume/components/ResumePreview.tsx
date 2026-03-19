@@ -1,8 +1,9 @@
 import React from 'react';
 import { 
-  FileText, 
   Download,
-  Layout as LayoutIcon
+  Layout as LayoutIcon,
+  Lock,
+  Sparkles
 } from 'lucide-react';
 import { type ResumeData } from '../types/resume';
 import { type TemplateType } from '../hooks/useResume';
@@ -18,9 +19,20 @@ interface ResumePreviewProps {
   data: ResumeData;
   template: TemplateType;
   setTemplate: (template: TemplateType) => void;
+  isPremium: boolean;
+  onUpgrade: () => void;
 }
 
-const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template, setTemplate }) => {
+const ResumePreview: React.FC<ResumePreviewProps> = ({ 
+  data, 
+  template, 
+  setTemplate, 
+  isPremium,
+  onUpgrade
+}) => {
+  const isTemplatePremium = (t: TemplateType) => t === 'minimal';
+  const isLocked = isTemplatePremium(template) && !isPremium;
+
   const renderTemplate = () => {
     switch (template) {
       case 'modern':
@@ -34,10 +46,10 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template, setTempla
     }
   };
 
-  const templates: { id: TemplateType; name: string }[] = [
-    { id: 'modern', name: 'Modern' },
-    { id: 'classic', name: 'Classic' },
-    { id: 'minimal', name: 'Minimal' },
+  const templates: { id: TemplateType; name: string; premium: boolean }[] = [
+    { id: 'modern', name: 'Modern', premium: false },
+    { id: 'classic', name: 'Classic', premium: false },
+    { id: 'minimal', name: 'Minimal', premium: true },
   ];
 
   return (
@@ -54,23 +66,64 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({ data, template, setTempla
                   key={t.id}
                   onClick={() => setTemplate(t.id)}
                   className={cn(
-                    'px-6 py-2 rounded-xl text-[0.7rem] font-black uppercase tracking-widest transition-all',
+                    'px-6 py-2 rounded-xl text-[0.7rem] font-black uppercase tracking-widest transition-all flex items-center gap-2',
                     template === t.id ? 'bg-white shadow-xl text-primary-600' : 'text-slate-400 hover:text-slate-600'
                   )}
                 >
                   {t.name}
+                  {t.premium && <Sparkles size={12} className={template === t.id ? 'text-amber-500' : 'text-slate-300'} />}
                 </button>
               ))}
            </div>
         </div>
-        <Button size="lg" className="h-14 px-10 rounded-2xl shadow-xl shadow-primary-600/10" icon={Download}>
+        <Button 
+          size="lg" 
+          disabled={isLocked}
+          className="h-14 px-10 rounded-2xl shadow-xl shadow-primary-600/10" 
+          icon={Download}
+        >
           Download PDF
         </Button>
       </Card>
 
-      <Card className="bg-white min-h-[1000px] p-20 rounded-[3.5rem] shadow-2xl relative overflow-hidden isolate ring-8 ring-primary-50/50">
-        {renderTemplate()}
-      </Card>
+      <div className="relative group">
+        <Card className={cn(
+          "bg-white min-h-[1000px] p-20 rounded-[3.5rem] shadow-2xl relative overflow-hidden isolate ring-8 ring-primary-50/50 transition-all duration-700",
+          isLocked ? "blur-xl grayscale scale-[0.98] pointer-events-none select-none opacity-40" : ""
+        )}>
+          {renderTemplate()}
+        </Card>
+
+        {isLocked && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center p-12">
+            <div className="max-w-md w-full bg-white/90 backdrop-blur-3xl border-2 border-primary-100 p-12 rounded-[3.5rem] shadow-[0_50px_100px_rgba(0,0,0,0.15)] text-center animate-fade-in flex flex-col items-center gap-8 ring-8 ring-white/30">
+              <div className="w-24 h-24 bg-primary-600 text-white rounded-3xl flex items-center justify-center shadow-2xl shadow-primary-200">
+                <Lock size={48} />
+              </div>
+              <div className="space-y-4">
+                <h3 className="text-3xl font-display font-black text-slate-800 tracking-tight leading-tight">Premium Template</h3>
+                <p className="text-slate-500 font-medium leading-relaxed">
+                  The <strong className="text-primary-600">Minimalist</strong> plan is a premium feature. Unlock all templates and expert tools to stand out.
+                </p>
+              </div>
+              <Button 
+                onClick={onUpgrade}
+                size="lg" 
+                className="w-full h-20 text-xl font-black rounded-[2rem] shadow-2xl shadow-primary-600/20"
+                icon={Sparkles}
+              >
+                Upgrade to Premium
+              </Button>
+              <button 
+                onClick={() => setTemplate('modern')}
+                className="text-sm font-black uppercase tracking-widest text-slate-400 hover:text-primary-600 transition-colors"
+              >
+                Continue with Free
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
