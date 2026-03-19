@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { 
   Download,
   Layout as LayoutIcon,
   Lock,
-  Sparkles
+  Sparkles,
+  Loader2
 } from 'lucide-react';
+// @ts-ignore
+import html2pdf from 'html2pdf.js';
 import { type ResumeData } from '../types/resume';
 import { type TemplateType } from '../hooks/useResume';
 import Card from '../../../components/ui/Card';
@@ -30,8 +33,40 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
   isPremium,
   onUpgrade
 }) => {
+  const resumeRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const isTemplatePremium = (t: TemplateType) => t === 'minimal';
   const isLocked = isTemplatePremium(template) && !isPremium;
+
+  const handleDownload = async () => {
+    if (!resumeRef.current || isLocked) return;
+    
+    setIsDownloading(true);
+    
+    const element = resumeRef.current;
+    const opt = {
+      margin: [0, 0, 0, 0] as [number, number, number, number],
+      filename: `${data.personalInfo.fullName || 'Resume'}_StudentHub.pdf`,
+      image: { type: 'jpeg' as const, quality: 0.98 },
+      html2canvas: { 
+        scale: 4, 
+        useCORS: true, 
+        letterRendering: true,
+        scrollX: 0,
+        scrollY: 0
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
+    };
+
+    try {
+      await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error('PDF Generation failed:', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const renderTemplate = () => {
     switch (template) {
@@ -77,22 +112,26 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
            </div>
         </div>
         <Button 
+          onClick={handleDownload}
+          isLoading={isDownloading}
+          disabled={isLocked || isDownloading}
           size="lg" 
-          disabled={isLocked}
           className="h-14 px-10 rounded-2xl shadow-xl shadow-primary-600/10" 
-          icon={Download}
+          icon={isDownloading ? Loader2 : Download}
         >
-          Download PDF
+          {isDownloading ? 'Generating...' : 'Download PDF'}
         </Button>
       </Card>
 
       <div className="relative group">
-        <Card className={cn(
-          "bg-white min-h-[1000px] p-20 rounded-[3.5rem] shadow-2xl relative overflow-hidden isolate ring-8 ring-primary-50/50 transition-all duration-700",
+        <div ref={resumeRef} className={cn(
+          "transition-all duration-700",
           isLocked ? "blur-xl grayscale scale-[0.98] pointer-events-none select-none opacity-40" : ""
         )}>
-          {renderTemplate()}
-        </Card>
+          <Card className="bg-white min-h-[1000px] p-20 rounded-[3.5rem] shadow-2xl relative overflow-hidden isolate ring-8 ring-primary-50/50">
+            {renderTemplate()}
+          </Card>
+        </div>
 
         {isLocked && (
           <div className="absolute inset-0 z-50 flex items-center justify-center p-12">
