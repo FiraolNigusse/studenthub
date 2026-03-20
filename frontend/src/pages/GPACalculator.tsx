@@ -13,6 +13,7 @@ import CourseRow from '../features/gpa/components/CourseRow';
 import GPASummary from '../features/gpa/components/GPASummary';
 import { useGPA } from '../features/gpa/hooks/useGPA';
 import AdUnit from '../components/ads/AdUnit';
+import AffiliateSection from '../components/affiliate/AffiliateSection';
 
 const GPACalculator: React.FC = () => {
   const { 
@@ -41,7 +42,7 @@ const GPACalculator: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-12 items-start">
+      <div className="grid lg:grid-cols-3 gap-12 items-start mb-24">
         <Card className="lg:col-span-2 p-10 ring-1 ring-slate-100 shadow-xl overflow-hidden hover:ring-primary-100 active:scale-[0.995]">
           <div className="flex items-center justify-between mb-10 pb-6 border-b border-slate-100">
             <h3 className="text-2xl font-display font-extrabold text-slate-800 flex items-center gap-3">
@@ -97,10 +98,12 @@ const GPACalculator: React.FC = () => {
               <p className="text-cyan-100 text-sm leading-relaxed font-medium">Save this result to your profile to visualize your academic growth over semesters.</p>
             </div>
           </div>
-          
+
           <AdUnit format="rectangle" className="bg-white p-4 rounded-[2rem] border border-slate-100 shadow-sm" />
         </div>
       </div>
+
+      <AffiliateSection />
 
       <Modal 
         isOpen={isModalOpen} 

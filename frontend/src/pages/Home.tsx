@@ -9,22 +9,13 @@ import {
 import Button, { cn } from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import AdUnit from '../components/ads/AdUnit';
+import AffiliateSection from '../components/affiliate/AffiliateSection';
 
 const Home: React.FC = () => {
   return (
     <div className="pb-20">
       {/* Hero Section */}
       <section className="container mx-auto px-6 pt-32 pb-24 flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-        {/* ... existing hero content ... */}
-      </section>
-
-      {/* Ad Section */}
-      <div className="container mx-auto px-6">
-        <AdUnit format="horizontal" className="mb-24 shadow-sm bg-white p-4 rounded-[3rem] border border-slate-100" />
-      </div>
-
-      {/* Features Section */}
-      <section className="container mx-auto px-6 py-24">
         <div className="flex-1 max-w-2xl text-center lg:text-left animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-600 rounded-full text-xs font-extrabold uppercase tracking-widest mb-8 border border-primary-200">
             <Sparkles size={14} className="animate-pulse" />
@@ -101,6 +92,11 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* Ad Section */}
+      <div className="container mx-auto px-6">
+        <AdUnit format="horizontal" className="mb-24 shadow-sm bg-white p-4 rounded-[3rem] border border-slate-100" />
+      </div>
+
       {/* Features Section */}
       <section className="container mx-auto px-6 py-24">
         <div className="text-center mb-16 max-w-2xl mx-auto">
@@ -143,6 +139,9 @@ const Home: React.FC = () => {
           ))}
         </div>
       </section>
+
+      {/* Recommendations Section */}
+      <AffiliateSection />
     </div>
   );
 };
