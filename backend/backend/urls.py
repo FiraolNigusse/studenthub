@@ -19,9 +19,12 @@ from django.urls import path, include
 
 from .views import health_check
 
+from payments.views import StripeWebhookView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/health/', health_check, name='health-check'),
+    path('api/webhook/stripe/', StripeWebhookView.as_view(), name='stripe-webhook'),
     path('api/auth/', include('users.urls')),
     path('api/payments/', include('payments.urls')),
     path('api/resumes/', include('resumes.urls')),
