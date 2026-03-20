@@ -6,6 +6,8 @@ from .managers import CustomUserManager
 class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
+    is_premium = models.BooleanField(default=False)
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
