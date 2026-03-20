@@ -33,4 +33,12 @@ walkthrough.md
 
 # OS specific files
 Thumbs.db
-db.sqlite
+
+# Python & Django
+*.pyc
+__pycache__
+venv
+.env
+db.sqlite3
+media/
+staticfiles/
