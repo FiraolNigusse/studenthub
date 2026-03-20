@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CheckCircle2, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import { AuthService } from '../services';
 
 const PaymentSuccess: React.FC = () => {
   const navigate = useNavigate();
@@ -10,17 +11,16 @@ const PaymentSuccess: React.FC = () => {
   const sessionId = searchParams.get('session_id');
 
   useEffect(() => {
-    // In a real app, we might verify with the backend here too.
-    // For now, we just refresh the local user data to show premium status.
     const refreshUser = async () => {
-       // Optional: fetch user data from an /api/auth/me endpoint if you have one.
-       // Since we don't have a dedicated "me" endpoint yet, we'll just wait for the webhook
-       // to have processed it and suggest the user refreshes or we can just mock the 
-       // premium update in local storage for immediate feedback if we trust the redirect.
-       
-       // Better: assume the webhook might take a second, but show success.
+       try {
+         await AuthService.getMe();
+       } catch (error) {
+         console.error('Failed to refresh user status:', error);
+       }
     };
-    refreshUser();
+    if (sessionId) {
+      refreshUser();
+    }
   }, [sessionId]);
 
   return (

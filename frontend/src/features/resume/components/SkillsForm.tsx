@@ -20,7 +20,7 @@ const SkillsForm: React.FC<SkillsFormProps> = ({
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-2 gap-6">
-        {skills.map((item, index) => (
+        {skills.map((item) => (
           <div key={item.id} className="relative p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100 group shadow-sm transition-all hover:bg-white group">
             <button 
               onClick={() => removeSkill(item.id)}

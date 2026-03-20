@@ -34,9 +34,19 @@ const AuthService = {
   getCurrentUser(): User | null {
     const userStr = localStorage.getItem('user');
     if (userStr) {
-      return JSON.parse(userStr);
+      try {
+        return JSON.parse(userStr);
+      } catch {
+        return null;
+      }
     }
     return null;
+  },
+
+  async getMe(): Promise<User> {
+    const response = await api.get('/auth/me/');
+    localStorage.setItem('user', JSON.stringify(response.data));
+    return response.data;
   },
 
   isAuthenticated(): boolean {

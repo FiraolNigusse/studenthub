@@ -19,7 +19,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
 }) => {
   return (
     <div className="space-y-12">
-      {experience.map((item, index) => (
+      {experience.map((item) => (
         <div key={item.id} className="relative p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100 group">
           <button 
             onClick={() => removeExperience(item.id)}
