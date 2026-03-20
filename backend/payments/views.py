@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Payment
 from .serializers import CreateCheckoutSessionSerializer
 
-stripe.api_key = config('STRIPE_SECRET_KEY')
+stripe.api_key = config('STRIPE_SECRET_KEY', default='')
 
 
 class CreateCheckoutSessionView(APIView):
@@ -36,7 +36,7 @@ class CreateCheckoutSessionView(APIView):
             user.stripe_customer_id = customer.id
             user.save(update_fields=['stripe_customer_id'])
 
-        price_id = serializer.validated_data.get('price_id') or config('STRIPE_PRICE_ID')
+        price_id = serializer.validated_data.get('price_id') or config('STRIPE_PRICE_ID', default='')
 
         try:
             checkout_session = stripe.checkout.Session.create(
@@ -47,8 +47,8 @@ class CreateCheckoutSessionView(APIView):
                     'quantity': 1,
                 }],
                 mode='payment',
-                success_url=config('FRONTEND_URL') + '/payment/success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=config('FRONTEND_URL') + '/payment/cancel',
+                success_url = config('FRONTEND_URL', default='http://localhost:5173') + '/payment/success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url = config('FRONTEND_URL', default='http://localhost:5173') + '/payment/cancel',
                 metadata={
                     'user_id': user.id,
                 },
@@ -85,7 +85,7 @@ class StripeWebhookView(APIView):
     def post(self, request):
         payload = request.body
         sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
-        webhook_secret = config('STRIPE_WEBHOOK_SECRET')
+        webhook_secret = config('STRIPE_WEBHOOK_SECRET', default='')
 
         try:
             event = stripe.Webhook.construct_event(
