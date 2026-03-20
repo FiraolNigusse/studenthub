@@ -17,6 +17,7 @@ import EducationForm from '../features/resume/components/EducationForm';
 import ExperienceForm from '../features/resume/components/ExperienceForm';
 import SkillsForm from '../features/resume/components/SkillsForm';
 import ResumePreview from '../features/resume/components/ResumePreview';
+import AdUnit from '../components/ads/AdUnit';
 
 type Section = 'personal' | 'education' | 'experience' | 'skills';
 
@@ -173,6 +174,8 @@ const ResumeBuilder: React.FC = () => {
                 </Button>
              </div>
           </Card>
+          
+          <AdUnit format="horizontal" className="bg-white p-4 rounded-[2rem] border border-slate-100 shadow-sm" />
         </div>
 
         {/* Live Preview */}

@@ -12,6 +12,7 @@ import Modal from '../components/ui/Modal';
 import CourseRow from '../features/gpa/components/CourseRow';
 import GPASummary from '../features/gpa/components/GPASummary';
 import { useGPA } from '../features/gpa/hooks/useGPA';
+import AdUnit from '../components/ads/AdUnit';
 
 const GPACalculator: React.FC = () => {
   const { 
@@ -96,6 +97,8 @@ const GPACalculator: React.FC = () => {
               <p className="text-cyan-100 text-sm leading-relaxed font-medium">Save this result to your profile to visualize your academic growth over semesters.</p>
             </div>
           </div>
+          
+          <AdUnit format="rectangle" className="bg-white p-4 rounded-[2rem] border border-slate-100 shadow-sm" />
         </div>
       </div>
 
