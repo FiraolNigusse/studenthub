@@ -25,7 +25,9 @@ const ResumeBuilder: React.FC = () => {
     data,
     template,
     isPremium,
+    isSaving,
     upgradeToPremium,
+    saveResume,
     setTemplate,
     updatePersonalInfo,
     addEducation,
@@ -110,6 +112,16 @@ const ResumeBuilder: React.FC = () => {
         <p className="text-xl text-slate-500 font-medium leading-relaxed">
           Craft a professional, ATS-optimized resume in minutes with our specialized editor for students and graduates.
         </p>
+        <div className="flex gap-4 mt-4">
+           <Button 
+             variant="outline" 
+             className="h-12 px-8 rounded-xl font-bold border-slate-200"
+             onClick={() => saveResume(data.personalInfo.fullName + ' Resume')}
+             disabled={isSaving}
+           >
+             {isSaving ? 'Saving...' : 'Save Resume'}
+           </Button>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-5 gap-12 items-start h-full pb-20 isolate">

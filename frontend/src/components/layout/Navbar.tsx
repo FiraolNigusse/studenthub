@@ -9,9 +9,11 @@ import {
   GraduationCap,
   Menu,
   X,
-  User
+  User,
+  LogOut
 } from 'lucide-react';
 import Button, { cn } from '../ui/Button';
+import { AuthService } from '../../services';
 
 const Navbar: React.FC = () => {
   const location = useLocation();
@@ -24,6 +26,12 @@ const Navbar: React.FC = () => {
     { name: 'Templates', path: '/templates', icon: <LayoutIcon size={18} /> },
     { name: 'Blog', path: '/blog', icon: <BookOpen size={18} /> },
   ];
+
+  const isAuthenticated = AuthService.isAuthenticated();
+
+  const handleLogout = () => {
+    AuthService.logout();
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 h-20 bg-white/80 backdrop-blur-xl border-b border-slate-100 z-[1000] flex items-center transition-all isolate overflow-visible">
@@ -61,10 +69,25 @@ const Navbar: React.FC = () => {
         </ul>
         
         <div className="hidden lg:flex items-center gap-4">
-           <Button variant="ghost" size="icon" className="w-11 h-11 rounded-2xl bg-slate-50 text-slate-500 hover:text-slate-800 border border-slate-100 group shadow-sm">
-             <User size={22} className="group-active:scale-95 transition-transform" />
-           </Button>
-           <Button size="md" className="h-11 px-8 rounded-2xl shadow-primary-600/10">Get Started</Button>
+           {isAuthenticated ? (
+             <>
+               <Button variant="ghost" size="icon" className="w-11 h-11 rounded-2xl bg-slate-50 text-slate-500 hover:text-slate-800 border border-slate-100 group shadow-sm">
+                 <User size={22} className="group-active:scale-95 transition-transform" />
+               </Button>
+               <Button variant="outline" size="sm" className="h-11 px-6 rounded-2xl border-slate-200" onClick={handleLogout}>
+                 <LogOut size={18} className="mr-2" /> Logout
+               </Button>
+             </>
+           ) : (
+             <>
+               <Link to="/login">
+                 <Button variant="ghost" className="font-bold">Sign In</Button>
+               </Link>
+               <Link to="/register">
+                 <Button size="md" className="h-11 px-8 rounded-2xl shadow-primary-600/10">Get Started</Button>
+               </Link>
+             </>
+           )}
         </div>
 
         {/* Mobile menu button */}
@@ -102,8 +125,20 @@ const Navbar: React.FC = () => {
                 </Link>
              ))}
              <div className="mt-8 pt-8 border-t border-slate-100 flex flex-col gap-4">
-                <Button size="lg" className="w-full h-16 rounded-3xl text-xl font-display font-extrabold shadow-primary-500/20">Get Started</Button>
-                <Button variant="outline" size="lg" className="w-full h-16 rounded-3xl text-xl font-display font-extrabold border-slate-200">Sign In</Button>
+                {isAuthenticated ? (
+                  <Button size="lg" className="w-full h-16 rounded-3xl text-xl font-display font-extrabold shadow-primary-500/20" onClick={handleLogout}>
+                    <LogOut size={24} className="mr-3" /> Logout
+                  </Button>
+                ) : (
+                  <>
+                    <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button size="lg" className="w-full h-16 rounded-3xl text-xl font-display font-extrabold shadow-primary-500/20">Get Started</Button>
+                    </Link>
+                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button variant="outline" size="lg" className="w-full h-16 rounded-3xl text-xl font-display font-extrabold border-slate-200">Sign In</Button>
+                    </Link>
+                  </>
+                )}
              </div>
           </div>
         </div>

@@ -6,6 +6,7 @@ import {
   type Skill, 
   type ResumeData 
 } from '../types/resume';
+import { AuthService, PaymentService, ResumeService } from '../../../services';
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -47,14 +48,42 @@ export type TemplateType = 'modern' | 'classic' | 'minimal';
 export const useResume = () => {
   const [data, setData] = useState<ResumeData>(initialData);
   const [template, setTemplate] = useState<TemplateType>('modern');
-  const [isPremium, setIsPremium] = useState<boolean>(() => {
-    return localStorage.getItem('studenthub_premium') === 'true';
-  });
+  const [isSaving, setIsSaving] = useState(false);
+  
+  const user = AuthService.getCurrentUser();
+  const isPremium = user?.is_premium || false;
 
-  const upgradeToPremium = useCallback(() => {
-    setIsPremium(true);
-    localStorage.setItem('studenthub_premium', 'true');
+  const upgradeToPremium = useCallback(async () => {
+    try {
+      const { checkout_url } = await PaymentService.createCheckoutSession();
+      window.location.href = checkout_url;
+    } catch (error) {
+      console.error('Failed to start checkout:', error);
+      alert('Could not initiate checkout. Please try again or sign in.');
+    }
   }, []);
+
+  const saveResume = useCallback(async (title: string = 'My Resume') => {
+    if (!AuthService.isAuthenticated()) {
+      alert('You must be signed in to save your resume.');
+      return;
+    }
+    
+    setIsSaving(true);
+    try {
+      await ResumeService.createResume({
+        title,
+        data,
+        template,
+      });
+      alert('Resume saved successfully!');
+    } catch (error) {
+      console.error('Failed to save resume:', error);
+      alert('Failed to save resume. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
+  }, [data, template]);
 
   const updatePersonalInfo = useCallback((field: keyof PersonalInfo, value: string) => {
     setData(prev => ({
@@ -131,7 +160,9 @@ export const useResume = () => {
     data,
     template,
     isPremium,
+    isSaving,
     upgradeToPremium,
+    saveResume,
     setTemplate,
     updatePersonalInfo,
     addEducation,

@@ -5,6 +5,10 @@ import GPACalculator from './pages/GPACalculator';
 import ResumeBuilder from './pages/ResumeBuilder';
 import Templates from './pages/Templates';
 import Blog from './pages/Blog';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentCancel from './pages/PaymentCancel';
 
 function App() {
   return (
@@ -16,6 +20,10 @@ function App() {
           <Route path="/resume" element={<ResumeBuilder />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/cancel" element={<PaymentCancel />} />
         </Routes>
       </Layout>
     </Router>
