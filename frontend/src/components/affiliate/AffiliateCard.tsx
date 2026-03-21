@@ -20,25 +20,37 @@ const AffiliateCard: React.FC<AffiliateCardProps> = ({
   link,
   badge,
   rating = 4.8,
+  image,
   price,
   isPremium = false
 }) => {
   return (
     <Card className="group p-0 border-slate-100 shadow-xl overflow-hidden hover:border-primary-100 flex flex-col h-full active:scale-[0.98] transition-all">
-      <div className="h-48 bg-gradient-to-br from-slate-100 to-slate-50 relative overflow-hidden flex items-center justify-center isolate">
-         <div className="absolute inset-0 bg-primary-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-         <div className="w-16 h-16 bg-white/80 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
-           <ExternalLink size={32} className="text-primary-500" />
-         </div>
+      <div className="h-64 bg-slate-50 relative overflow-hidden flex items-center justify-center isolate border-b border-slate-100 group">
+         <div className="absolute inset-0 bg-primary-500/5 opacity-0 group-hover:opacity-100 transition-opacity z-0" />
+         
+         {image ? (
+            <div className="relative z-10 w-full h-full p-6">
+              <img 
+                src={image} 
+                alt={title} 
+                className="w-full h-full object-contain drop-shadow-2xl group-hover:scale-105 group-hover:rotate-2 transition-transform duration-500"
+              />
+            </div>
+         ) : (
+            <div className="w-16 h-16 bg-white/80 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 relative z-10">
+              <ExternalLink size={32} className="text-primary-500" />
+            </div>
+         )}
          
          {badge && (
-           <div className="absolute top-4 right-4 px-3 py-1 bg-white/90 backdrop-blur text-[10px] font-black uppercase tracking-widest text-slate-500 rounded-lg border border-slate-100">
+           <div className="absolute top-4 right-4 z-20 px-3 py-1 bg-white/90 backdrop-blur text-[10px] font-black uppercase tracking-widest text-slate-500 rounded-lg border border-slate-100 shadow-sm">
              {badge}
            </div>
          )}
          
          {isPremium && (
-           <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-600 rounded-lg border border-amber-100 text-[10px] font-black uppercase tracking-widest">
+           <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-600 rounded-lg border border-amber-100 text-[10px] font-black uppercase tracking-widest shadow-sm">
              <ShieldCheck size={12} /> Recommended
            </div>
          )}

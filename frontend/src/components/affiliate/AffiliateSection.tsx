@@ -1,30 +1,34 @@
 import React from 'react';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import AffiliateCard from './AffiliateCard';
+import atomicHabitsImg from '../../assets/recommendations/atomic-habits.png';
 
 const AffiliateSection: React.FC = () => {
   const recommendations = [
+    { 
+      title: 'Atomic Habits (Kindle Edition)', 
+      description: 'The definitive guide to building good habits and breaking bad ones. Master the systems that drive your success.',
+      link: import.meta.env.VITE_AMAZON_KINDLE_URL || 'https://amzn.to/4d1MXKC',
+      badge: 'Best Seller',
+      price: '$12.99',
+      image: atomicHabitsImg,
+      isPremium: true
+    },
+    { 
+      title: 'Atomic Habits (Hardcover)', 
+      description: 'A beautiful hardcover edition of James Clear\'s life-changing book. Keep it on your desk for daily inspiration.',
+      link: import.meta.env.VITE_AMAZON_HARDCOVER_URL || 'https://amzn.to/41h5hbt',
+      badge: 'Highly Recommended',
+      price: '$18.00',
+      image: atomicHabitsImg,
+      isPremium: true
+    },
     { 
       title: 'Grammarly For Students', 
       description: 'The AI writing assistant that helps you write clearly and error-free on any platform. Essential for high-quality essays.',
       link: 'https://www.grammarly.com/',
       badge: 'Academics',
       price: 'Free / Premium',
-      isPremium: true
-    },
-    { 
-      title: 'Notion Plus', 
-      description: 'The ultimate workspace for your notes, tasks, and projects. Perfect for managing complex semesters and research projects.',
-      link: 'https://www.notion.so/',
-      badge: 'Productivity',
-      price: '$10 / mo',
-    },
-    { 
-      title: 'Coursera Graduate Track', 
-      description: 'Access top-tier university courses and professional certificates to boost your career prospects while still in school.',
-      link: 'https://www.coursera.org/',
-      badge: 'Career',
-      rating: 4.9,
       isPremium: true
     },
   ];
