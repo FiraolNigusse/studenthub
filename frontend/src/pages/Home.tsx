@@ -11,6 +11,8 @@ import Card from '../components/ui/Card';
 import AdUnit from '../components/ads/AdUnit';
 import AffiliateSection from '../components/affiliate/AffiliateSection';
 
+import { Link } from 'react-router-dom';
+
 const Home: React.FC = () => {
   return (
     <div className="pb-20">
@@ -32,12 +34,16 @@ const Home: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start mb-16">
-            <Button size="lg" className="px-10 h-16 text-lg tracking-tight">
-              Get Started for Free <ArrowRight size={22} className="ml-1" />
-            </Button>
-            <Button variant="outline" size="lg" className="h-16 px-10 text-lg border-slate-200 hover:border-primary-200">
-              Explore Templates
-            </Button>
+            <Link to="/resume">
+              <Button size="lg" className="px-10 h-16 text-lg tracking-tight w-full sm:w-auto">
+                Get Started for Free <ArrowRight size={22} className="ml-1" />
+              </Button>
+            </Link>
+            <Link to="/templates">
+              <Button variant="outline" size="lg" className="h-16 px-10 text-lg border-slate-200 hover:border-primary-200 w-full sm:w-auto">
+                Explore Templates
+              </Button>
+            </Link>
           </div>
           
           <div className="flex gap-12 justify-center lg:justify-start">

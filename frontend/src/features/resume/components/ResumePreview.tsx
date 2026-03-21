@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { 
   Download,
-  Layout as LayoutIcon,
   Lock,
   Sparkles,
   Loader2,
@@ -36,36 +35,59 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
 }) => {
   const resumeRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<'free' | 'pro'>('free');
 
-  const isTemplatePremium = (t: TemplateType) => t === 'minimal';
+  const templates: { id: TemplateType; name: string; premium: boolean; category: 'free' | 'pro' }[] = [
+    { id: 'modern', name: 'Professional', premium: false, category: 'free' },
+    { id: 'classic', name: 'Executive', premium: false, category: 'free' },
+    { id: 'minimal', name: 'Creative', premium: true, category: 'pro' },
+  ];
+
+  const filteredTemplates = templates.filter(t => t.category === activeCategory);
+  
+  const isTemplatePremium = (t: TemplateType) => templates.find(temp => temp.id === t)?.premium || false;
   const isLocked = isTemplatePremium(template) && !isPremium;
 
   const handleDownload = async () => {
-    if (!resumeRef.current || isLocked) return;
+    if (!resumeRef.current) return;
+    if (isLocked) {
+      onUpgrade();
+      return;
+    }
     
     setIsDownloading(true);
     
+    // Add a slight delay to ensure all animations are finished
+    await new Promise(resolve => setTimeout(resolve, 500));
+
     const element = resumeRef.current;
+    
+    // PDF Options optimized for high quality and compatibility
     const opt = {
-      margin: [0, 0, 0, 0] as [number, number, number, number],
-      filename: `${data.personalInfo.fullName || 'Resume'}_StudentHub.pdf`,
-      image: { type: 'jpeg' as const, quality: 0.98 },
+      margin: 0,
+      filename: `${data.personalInfo.fullName.replace(/\s+/g, '_') || 'Resume'}_StudentHub.pdf`,
+      image: { type: 'jpeg' as const, quality: 1.0 },
       html2canvas: { 
-        scale: 4, 
+        scale: 3, // High scale for crisp text
         useCORS: true, 
         letterRendering: true,
-        scrollX: 0,
-        scrollY: 0
+        backgroundColor: '#ffffff',
+        logging: false,
+        windowWidth: 850 // Fixed width for consistent rendering
       },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const }
+      jsPDF: { 
+        unit: 'mm' as const, 
+        format: 'a4' as const, 
+        orientation: 'portrait' as const,
+        compress: true 
+      }
     };
 
     try {
       await html2pdf().set(opt).from(element).save();
-      // Optional: alert('Resume downloaded successfully!');
     } catch (error) {
       console.error('PDF Generation failed:', error);
-      alert('Failed to generate PDF. Please try a different browser or check your connection.');
+      alert('PDF generation encountered an error. Try using a modern browser like Chrome or contact support.');
     } finally {
       setIsDownloading(false);
     }
@@ -73,33 +95,41 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
 
   const renderTemplate = () => {
     switch (template) {
-      case 'modern':
-        return <ModernTemplate data={data} />;
-      case 'classic':
-        return <ClassicTemplate data={data} />;
-      case 'minimal':
-        return <MinimalTemplate data={data} />;
-      default:
-        return <ModernTemplate data={data} />;
+      case 'modern': return <ModernTemplate data={data} />;
+      case 'classic': return <ClassicTemplate data={data} />;
+      case 'minimal': return <MinimalTemplate data={data} />;
+      default: return <ModernTemplate data={data} />;
     }
   };
 
-  const templates: { id: TemplateType; name: string; premium: boolean }[] = [
-    { id: 'modern', name: 'Modern', premium: false },
-    { id: 'classic', name: 'Classic', premium: false },
-    { id: 'minimal', name: 'Minimal', premium: true },
-  ];
-
   return (
     <div className="lg:col-span-3 space-y-8 animate-fade-in sticky top-32">
-      <Card className="p-4 lg:p-6 bg-white/80 border-slate-100 shadow-xl flex flex-col lg:flex-row justify-between items-center gap-6 backdrop-blur-3xl rounded-[2.5rem] isolate overflow-hidden">
+      <Card className="p-4 lg:p-6 bg-white border-slate-100 shadow-xl flex flex-col lg:flex-row justify-between items-center gap-6 rounded-[2.5rem] isolate overflow-hidden">
         <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 w-full lg:w-auto">
-           <div className="flex items-center gap-3 px-5 py-3 bg-slate-50 rounded-2xl border border-slate-100 group shrink-0">
-             <LayoutIcon size={20} className="text-primary-500" />
-             <span className="text-sm font-bold text-slate-500">Template</span>
+           {/* Category Switcher */}
+           <div className="flex bg-slate-100 p-1 rounded-2xl border border-slate-200 shrink-0">
+             <button 
+                onClick={() => setActiveCategory('free')}
+                className={cn(
+                  "px-4 py-2 rounded-xl text-[0.65rem] font-black uppercase tracking-widest transition-all",
+                  activeCategory === 'free' ? "bg-white shadow text-slate-800" : "text-slate-400 hover:text-slate-600"
+                )}
+             >
+               Free
+             </button>
+             <button 
+                onClick={() => setActiveCategory('pro')}
+                className={cn(
+                  "px-4 py-2 rounded-xl text-[0.65rem] font-black uppercase tracking-widest transition-all flex items-center gap-2",
+                  activeCategory === 'pro' ? "bg-white shadow text-primary-600" : "text-slate-400 hover:text-slate-600"
+                )}
+             >
+               Pro <Sparkles size={10} className="text-amber-500" />
+             </button>
            </div>
-           <div className="flex gap-2 p-1.5 bg-slate-100/50 rounded-2xl border border-slate-100 overflow-x-auto max-w-full no-scrollbar overscroll-contain">
-              {templates.map((t) => (
+
+           <div className="flex gap-2 p-1.5 bg-slate-50 rounded-2xl border border-slate-100 overflow-x-auto max-w-full no-scrollbar overscroll-contain">
+              {filteredTemplates.map((t) => (
                 <button
                   key={t.id}
                   onClick={() => setTemplate(t.id)}
@@ -109,7 +139,7 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
                   )}
                 >
                   {t.name}
-                  {t.premium && <Sparkles size={12} className={template === t.id ? 'text-amber-500' : 'text-slate-300'} />}
+                  {t.premium && <Lock size={10} className={template === t.id ? 'text-primary-400' : 'text-slate-300'} />}
                 </button>
               ))}
            </div>
@@ -117,7 +147,7 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
         <Button 
           onClick={handleDownload}
           isLoading={isDownloading}
-          disabled={isLocked || isDownloading}
+          disabled={isDownloading}
           size="lg" 
           className="h-14 px-10 rounded-2xl shadow-xl shadow-primary-600/10 w-full lg:w-auto flex justify-center items-center gap-3" 
           icon={isDownloading ? Loader2 : Download}
@@ -128,15 +158,27 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
 
       <div className="relative group">
         <div className="flex items-center gap-4 mb-4 ml-6 uppercase tracking-[0.3em] text-[0.65rem] font-bold text-slate-400">
-           <Eye size={12} /> Live Resume Preview
+           <Eye size={12} /> Live Preview
         </div>
-        <div ref={resumeRef} className={cn(
-          "transition-all duration-700",
+        
+        {/* The Capture Container */}
+        <div className={cn(
+          "transition-all duration-700 bg-slate-200 p-8 rounded-[4rem] shadow-inner",
           isLocked ? "blur-xl grayscale scale-[0.98] pointer-events-none select-none opacity-40" : ""
         )}>
-          <Card className="bg-white min-h-[1100px] p-20 rounded-[3.5rem] shadow-2xl relative overflow-hidden isolate ring-1 ring-slate-100">
-            {renderTemplate()}
-          </Card>
+          <div 
+            ref={resumeRef} 
+            className="bg-white shadow-2xl mx-auto overflow-hidden"
+            style={{ 
+              width: '210mm', 
+              minHeight: '297mm',
+              backgroundColor: '#ffffff'
+            }}
+          >
+            <div className="p-16">
+              {renderTemplate()}
+            </div>
+          </div>
         </div>
 
         {isLocked && (

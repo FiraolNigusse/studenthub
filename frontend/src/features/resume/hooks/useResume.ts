@@ -13,7 +13,8 @@ const initialData: ResumeData = {
     fullName: 'Alexander Student',
     email: 'alex.student@university.edu',
     phone: '+1 555-0123',
-    location: 'San Francisco, CA'
+    location: 'San Francisco, CA',
+    summary: 'Highly motivated computer science student with a strong foundation in software development and experience in scalable cloud infrastructure. Eager to contribute to innovative projects and grow as a professional engineer.'
   },
   education: [
     {
@@ -60,7 +61,8 @@ export const useResume = () => {
           fullName: user.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : (user.email.split('@')[0]),
           email: user.email,
           phone: '',
-          location: ''
+          location: '',
+          summary: ''
         },
         // Optionally clear the dummy sections if user is logged in for first time
         education: [],
@@ -77,7 +79,7 @@ export const useResume = () => {
   const clearResume = useCallback(() => {
     if (window.confirm('Are you sure you want to clear all data and start from scratch?')) {
         setData({
-          personalInfo: { fullName: '', email: '', phone: '', location: '' },
+          personalInfo: { fullName: '', email: '', phone: '', location: '', summary: '' },
           education: [],
           experience: [],
           skills: []

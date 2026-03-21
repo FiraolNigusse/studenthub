@@ -1,9 +1,19 @@
 import React from 'react';
-import { Sparkles, ArrowRight, BookOpen, Brain } from 'lucide-react';
+import { Sparkles, ArrowRight, BookOpen, Brain, PenTool } from 'lucide-react';
 import AffiliateCard from './AffiliateCard';
+import atomicHabitsImg from '../../assets/recommendations/atomic-habits.png';
 
 const AffiliateSection: React.FC = () => {
   const recommendations = [
+    { 
+      title: 'Atomic Habits', 
+      description: 'The definitive guide to building good habits and breaking bad ones. Master the systems that drive your success.',
+      link: import.meta.env.VITE_AMAZON_KINDLE_URL || 'https://amzn.to/4d1MXKC',
+      badge: 'Best Seller',
+      rating: 4.9,
+      image: atomicHabitsImg,
+      isPremium: true
+    },
     { 
       title: 'Deep Work', 
       description: 'Struggling to focus while studying? This book teaches deep focus in a distracted world.',
@@ -20,6 +30,15 @@ const AffiliateSection: React.FC = () => {
       badge: 'Academic Pick',
       rating: 4.8,
       icon: BookOpen,
+      isPremium: true
+    },
+    { 
+      title: 'Grammarly For Students', 
+      description: 'The AI writing assistant that helps you write clearly and error-free on any platform. Essential for high-quality essays.',
+      link: 'https://www.grammarly.com/',
+      badge: 'Academics',
+      rating: 4.7,
+      icon: PenTool,
       isPremium: true
     },
   ];
