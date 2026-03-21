@@ -21,6 +21,7 @@ const AuthService = {
       first_name: data.first_name,
       last_name: data.last_name
     };
+    console.log('Registering with payload:', payload);
     const response = await api.post('/auth/register/', payload);
     const { tokens, user } = response.data;
     

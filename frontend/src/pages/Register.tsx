@@ -29,28 +29,24 @@ const Register: React.FC = () => {
     setError(null);
 
       try {
+        console.log('Attempting registration with:', formData);
         await AuthService.register(formData);
         navigate('/resume');
       } catch (err: any) {
-        console.error('Registration error details:', err.response?.data);
+        console.error('Registration error details:', err.response?.data || err);
         const errors = err.response?.data;
         if (errors) {
-            // Priority 1: non_field_errors
-            if (errors.non_field_errors) {
-                setError(Array.isArray(errors.non_field_errors) ? errors.non_field_errors[0] : errors.non_field_errors);
-            } else if (typeof errors === 'string') {
+            if (typeof errors === 'string') {
                 setError(errors);
             } else {
-                // Priority 2: first available field error
                 const errorEntries = Object.entries(errors);
                 if (errorEntries.length > 0) {
                     const [field, firstError] = errorEntries[0];
-                    const message = Array.isArray(firstError) ? firstError[0] : (typeof firstError === 'string' ? firstError : 'Registration failed.');
-                    // Prepend field name if it's not 'detail' or 'password' related (for better context)
-                    const prefix = (field !== 'detail' && field !== 'password' && field !== 'password2') ? `${field.replace('_', ' ')}: ` : '';
-                    setError(prefix + message);
+                    const rawMsg = Array.isArray(firstError) ? firstError[0] : (typeof firstError === 'object' ? JSON.stringify(firstError) : String(firstError));
+                    const prefix = (field !== 'detail' && field !== 'password' && field !== 'password2' && field !== 'non_field_errors') ? `${field.replace('_', ' ')}: ` : '';
+                    setError(prefix + rawMsg);
                 } else {
-                    setError('Registration failed. Please check your data.');
+                    setError('Registration failed: ' + JSON.stringify(errors));
                 }
             }
         } else {
