@@ -14,7 +14,14 @@ const AuthService = {
   },
 
   async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await api.post('/auth/register/', data);
+    const payload = {
+      email: data.email,
+      password: data.password,
+      password2: data.password_confirm,
+      first_name: data.first_name,
+      last_name: data.last_name
+    };
+    const response = await api.post('/auth/register/', payload);
     const { tokens, user } = response.data;
     
     localStorage.setItem('access_token', tokens.access);

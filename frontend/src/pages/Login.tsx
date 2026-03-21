@@ -18,12 +18,12 @@ const Login: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
-    try {
-      await AuthService.login({ email, password });
-      navigate('/resume');
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Invalid email or password. Please try again.');
-    } finally {
+      try {
+        await AuthService.login({ email, password });
+        navigate('/resume');
+      } catch (err: any) {
+        setError(err.response?.data?.detail || 'Invalid email or password. Please try again.');
+      } finally {
       setIsLoading(false);
     }
   };

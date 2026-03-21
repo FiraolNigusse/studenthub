@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface AdUnitProps {
   slot?: string;
@@ -15,17 +15,43 @@ const AdUnit: React.FC<AdUnitProps> = ({
   style = {},
   display = 'block'
 }) => {
+  const adRef = useRef<HTMLDivElement>(null);
+  const initialized = useRef(false);
+
   useEffect(() => {
-    try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.error('AdSense error:', e);
+    if (initialized.current) return;
+
+    const pushAd = () => {
+      if (!adRef.current || adRef.current.offsetWidth === 0) return;
+      
+      try {
+        // @ts-ignore
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        initialized.current = true;
+      } catch (e) {
+        console.error('AdSense error:', e);
+      }
+    };
+
+    // Try immediately
+    pushAd();
+
+    // If not initialized, set up an observer to catch when it becomes visible
+    if (!initialized.current) {
+      const observer = new ResizeObserver(() => {
+        if (!initialized.current && adRef.current && adRef.current.offsetWidth > 0) {
+          pushAd();
+          observer.disconnect();
+        }
+      });
+      
+      if (adRef.current) observer.observe(adRef.current);
+      return () => observer.disconnect();
     }
   }, []);
 
   return (
-    <div className={`ad-container my-8 mx-auto text-center ${className}`}>
+    <div className={`ad-container my-8 mx-auto text-center ${className}`} ref={adRef}>
       {/* Label for development/clarity */}
       <div className="text-[10px] uppercase tracking-widest text-slate-300 mb-2 font-bold">Advertisement</div>
       

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserPlus, Mail, Lock, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { UserPlus, Mail, Lock, AlertCircle, ArrowRight, ShieldCheck, User } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Card from '../components/ui/Card';
@@ -9,6 +9,8 @@ import { AuthService } from '../services';
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     password_confirm: ''
@@ -26,12 +28,20 @@ const Register: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
-    try {
-      await AuthService.register(formData);
-      navigate('/resume');
-    } catch (err: any) {
-      setError(err.response?.data?.email?.[0] || 'Registration failed. Please check your information.');
-    } finally {
+      try {
+        await AuthService.register(formData);
+        navigate('/resume');
+      } catch (err: any) {
+        const errors = err.response?.data;
+        if (errors) {
+            // Get the first error from any field
+            const firstError = Object.values(errors)[0];
+            const message = Array.isArray(firstError) ? firstError[0] : (typeof firstError === 'string' ? firstError : 'Registration failed.');
+            setError(message);
+        } else {
+            setError('Registration failed. Please try again.');
+        }
+      } finally {
       setIsLoading(false);
     }
   };
@@ -59,6 +69,27 @@ const Register: React.FC = () => {
                 {error}
               </div>
             )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="First Name"
+                name="first_name"
+                placeholder="e.g. Alex"
+                value={formData.first_name}
+                onChange={handleChange}
+                icon={User}
+                required
+              />
+              <Input
+                label="Last Name"
+                name="last_name"
+                placeholder="e.g. Student"
+                value={formData.last_name}
+                onChange={handleChange}
+                icon={User}
+                required
+              />
+            </div>
 
             <Input
               label="Email Address"
