@@ -1,4 +1,5 @@
 import React from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { ExternalLink, Star, ArrowRight, ShieldCheck } from 'lucide-react';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
@@ -10,6 +11,7 @@ interface AffiliateCardProps {
   badge?: string;
   rating?: number;
   image?: string;
+  icon?: LucideIcon;
   price?: string;
   isPremium?: boolean;
 }
@@ -21,6 +23,7 @@ const AffiliateCard: React.FC<AffiliateCardProps> = ({
   badge,
   rating = 4.8,
   image,
+  icon: Icon,
   price,
   isPremium = false
 }) => {
@@ -39,7 +42,11 @@ const AffiliateCard: React.FC<AffiliateCardProps> = ({
             </div>
          ) : (
             <div className="w-16 h-16 bg-white/80 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 relative z-10">
-              <ExternalLink size={32} className="text-primary-500" />
+              {Icon ? (
+                <Icon size={32} className="text-primary-500" />
+              ) : (
+                <ExternalLink size={32} className="text-primary-500" />
+              )}
             </div>
          )}
          

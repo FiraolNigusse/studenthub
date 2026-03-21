@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import Button, { cn } from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import SEO from '../components/seo/SEO';
+import AffiliateSection from '../components/affiliate/AffiliateSection';
 import { useResume } from '../features/resume/hooks/useResume';
 import PersonalInfoForm from '../features/resume/components/PersonalInfoForm';
 import EducationForm from '../features/resume/components/EducationForm';
@@ -19,6 +21,7 @@ import ExperienceForm from '../features/resume/components/ExperienceForm';
 import SkillsForm from '../features/resume/components/SkillsForm';
 import ResumePreview from '../features/resume/components/ResumePreview';
 import AdUnit from '../components/ads/AdUnit';
+
 
 type Section = 'personal' | 'education' | 'experience' | 'skills';
 
@@ -100,7 +103,13 @@ const ResumeBuilder: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-6 py-24 animate-fade-in max-w-[1600px]">
+    <>
+      <SEO 
+        title="Professional Resume Builder - ATS-Friendly Templates" 
+        description="Craft a standout resume with our easy-to-use builder. Choose from modern, student-focused templates designed for high-impact results."
+        keywords="resume builder, cv creator, professional resume, student resume, ats-friendly resume"
+      />
+      <div className="container mx-auto px-6 py-24 animate-fade-in max-w-[1600px]">
       <div className="text-center mb-20 max-w-3xl mx-auto flex flex-col items-center gap-6">
         <div className="flex gap-2">
            <h1 className="text-5xl lg:text-7xl font-display font-black tracking-tighter text-slate-900 leading-tight">
@@ -154,7 +163,6 @@ const ResumeBuilder: React.FC = () => {
                   </button>
                 ))}
              </div>
-             
              <div className="min-h-[400px] py-6 animate-fade-in relative z-10 transition-all">
                 <div className="flex items-center justify-between mb-10 pb-4 border-b border-slate-50">
                   <div className="flex items-center gap-4">
@@ -197,7 +205,9 @@ const ResumeBuilder: React.FC = () => {
           onUpgrade={upgradeToPremium}
         />
       </div>
+      <AffiliateSection />
     </div>
+    </>
   );
 };
 

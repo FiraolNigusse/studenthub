@@ -1,34 +1,25 @@
 import React from 'react';
-import { Sparkles, ArrowRight } from 'lucide-react';
+import { Sparkles, ArrowRight, BookOpen, Brain } from 'lucide-react';
 import AffiliateCard from './AffiliateCard';
-import atomicHabitsImg from '../../assets/recommendations/atomic-habits.png';
 
 const AffiliateSection: React.FC = () => {
   const recommendations = [
     { 
-      title: 'Atomic Habits (Kindle Edition)', 
-      description: 'The definitive guide to building good habits and breaking bad ones. Master the systems that drive your success.',
-      link: import.meta.env.VITE_AMAZON_KINDLE_URL || 'https://amzn.to/4d1MXKC',
-      badge: 'Best Seller',
-      price: '$12.99',
-      image: atomicHabitsImg,
+      title: 'Deep Work', 
+      description: 'Struggling to focus while studying? This book teaches deep focus in a distracted world.',
+      link: 'https://amzn.to/4lJ4Vnj',
+      badge: 'Bestseller',
+      rating: 4.9,
+      icon: Brain,
       isPremium: true
     },
     { 
-      title: 'Atomic Habits (Hardcover)', 
-      description: 'A beautiful hardcover edition of James Clear\'s life-changing book. Keep it on your desk for daily inspiration.',
-      link: import.meta.env.VITE_AMAZON_HARDCOVER_URL || 'https://amzn.to/41h5hbt',
-      badge: 'Highly Recommended',
-      price: '$18.00',
-      image: atomicHabitsImg,
-      isPremium: true
-    },
-    { 
-      title: 'Grammarly For Students', 
-      description: 'The AI writing assistant that helps you write clearly and error-free on any platform. Essential for high-quality essays.',
-      link: 'https://www.grammarly.com/',
-      badge: 'Academics',
-      price: 'Free / Premium',
+      title: 'Make It Stick', 
+      description: 'Want to actually remember what you study? This explains how learning really works.',
+      link: 'https://amzn.to/4brzYko',
+      badge: 'Academic Pick',
+      rating: 4.8,
+      icon: BookOpen,
       isPremium: true
     },
   ];
@@ -45,10 +36,10 @@ const AffiliateSection: React.FC = () => {
                 <Sparkles size={14} className="text-amber-500" /> Recommendations
              </div>
              <h2 className="text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-tight mb-4">
-                Tools to Supercharge <span className="gradient-text">Your Performance</span>
+                📚 Improve Your <span className="gradient-text">Study Performance</span>
              </h2>
              <p className="text-lg text-slate-500 font-medium leading-relaxed">
-                Handpicked, academic-focused resources we recommend to help you excel during your studies and beyond.
+                Unlock your full academic potential with these handpicked, science-backed resources.
              </p>
           </div>
           <button className="flex items-center gap-3 text-slate-400 font-black hover:text-primary-600 transition-colors uppercase tracking-widest text-xs h-fit py-4 px-8 bg-white rounded-2xl shadow-sm border border-slate-100 group">
@@ -56,12 +47,18 @@ const AffiliateSection: React.FC = () => {
           </button>
        </div>
 
-       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+       <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-16">
           {recommendations.map((rec, i) => (
             <div key={i} className="animate-fade-in" style={{ animationDelay: `${i * 100}ms` }}>
               <AffiliateCard {...rec} />
             </div>
           ))}
+       </div>
+
+       <div className="text-center mt-12 pt-12 border-t border-slate-100">
+          <p className="text-sm text-slate-400 font-medium italic">
+            "This page contains affiliate links. I may earn a commission at no extra cost to you."
+          </p>
        </div>
     </section>
   );

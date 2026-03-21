@@ -4,6 +4,7 @@ import { Calendar, Clock, ArrowLeft, Facebook, Twitter, Link as LinkIcon, Target
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import SEO from '../components/seo/SEO';
+import AffiliateSection from '../components/affiliate/AffiliateSection';
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -135,6 +136,7 @@ const BlogPost: React.FC = () => {
             </aside>
          </div>
       </div>
+      <AffiliateSection />
     </div>
   );
 };

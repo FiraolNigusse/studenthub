@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import Button, { cn } from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import SEO from '../components/seo/SEO';
+import AffiliateSection from '../components/affiliate/AffiliateSection';
 
 const Blog: React.FC = () => {
   const posts = [
@@ -146,6 +147,7 @@ const Blog: React.FC = () => {
             </article>
           ))}
         </div>
+        <AffiliateSection />
       </div>
     </>
   );

@@ -14,6 +14,7 @@ import GPASummary from '../features/gpa/components/GPASummary';
 import { useGPA } from '../features/gpa/hooks/useGPA';
 import AdUnit from '../components/ads/AdUnit';
 import AffiliateSection from '../components/affiliate/AffiliateSection';
+import SEO from '../components/seo/SEO';
 
 const GPACalculator: React.FC = () => {
   const { 
@@ -32,7 +33,13 @@ const GPACalculator: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="container mx-auto px-6 py-24 animate-fade-in max-w-6xl">
+    <>
+      <SEO 
+        title="GPA Calculator - Academic Performance Tracker" 
+        description="Calculate your cumulative GPA with precision. Add courses, track credits, and plan your academic goals with StudentHub."
+        keywords="gpa calculator, cumulative gpa, grade tracker, academic success, student tools"
+      />
+      <div className="container mx-auto px-6 py-24 animate-fade-in max-w-6xl">
       <div className="text-center mb-20 max-w-3xl mx-auto">
         <h1 className="text-5xl lg:text-7xl font-display font-extrabold mb-8 tracking-tight text-slate-900 leading-tight">
           GPA <span className="gradient-text">Calculator</span>
@@ -123,6 +130,7 @@ const GPACalculator: React.FC = () => {
         </div>
       </Modal>
     </div>
+    </>
   );
 };
 
