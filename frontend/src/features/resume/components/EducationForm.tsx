@@ -35,7 +35,7 @@ const EducationForm: React.FC<EducationFormProps> = ({
               onChange={(e) => updateEducation(item.id, 'school', e.target.value)} 
               placeholder="e.g. Stanford University"
             />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input 
                 label="Degree / Major" 
                 value={item.degree} 

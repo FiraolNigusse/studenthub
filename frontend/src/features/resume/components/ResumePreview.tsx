@@ -89,19 +89,19 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
 
   return (
     <div className="lg:col-span-3 space-y-8 animate-fade-in sticky top-32">
-      <Card className="p-6 bg-white/80 border-slate-100 shadow-xl flex flex-col md:flex-row justify-between items-center gap-6 backdrop-blur-3xl rounded-[2.5rem] isolate">
-        <div className="flex items-center gap-6">
-           <div className="flex items-center gap-3 px-5 py-3 bg-slate-50 rounded-2xl border border-slate-100 group">
+      <Card className="p-4 lg:p-6 bg-white/80 border-slate-100 shadow-xl flex flex-col lg:flex-row justify-between items-center gap-6 backdrop-blur-3xl rounded-[2.5rem] isolate overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 w-full lg:w-auto">
+           <div className="flex items-center gap-3 px-5 py-3 bg-slate-50 rounded-2xl border border-slate-100 group shrink-0">
              <LayoutIcon size={20} className="text-primary-500" />
              <span className="text-sm font-bold text-slate-500">Template</span>
            </div>
-           <div className="flex gap-2 p-1.5 bg-slate-100/50 rounded-2xl border border-slate-100">
+           <div className="flex gap-2 p-1.5 bg-slate-100/50 rounded-2xl border border-slate-100 overflow-x-auto max-w-full no-scrollbar overscroll-contain">
               {templates.map((t) => (
                 <button
                   key={t.id}
                   onClick={() => setTemplate(t.id)}
                   className={cn(
-                    'px-6 py-2 rounded-xl text-[0.7rem] font-black uppercase tracking-widest transition-all flex items-center gap-2',
+                    'px-6 py-2 rounded-xl text-[0.7rem] font-black uppercase tracking-widest transition-all flex items-center gap-2 whitespace-nowrap',
                     template === t.id ? 'bg-white shadow-xl text-primary-600' : 'text-slate-400 hover:text-slate-600'
                   )}
                 >
@@ -116,7 +116,7 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
           isLoading={isDownloading}
           disabled={isLocked || isDownloading}
           size="lg" 
-          className="h-14 px-10 rounded-2xl shadow-xl shadow-primary-600/10" 
+          className="h-14 px-10 rounded-2xl shadow-xl shadow-primary-600/10 w-full lg:w-auto flex justify-center items-center gap-3" 
           icon={isDownloading ? Loader2 : Download}
         >
           {isDownloading ? 'Generating...' : 'Download PDF'}

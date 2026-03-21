@@ -35,7 +35,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
               onChange={(e) => updateExperience(item.id, 'company', e.target.value)} 
               placeholder="e.g. Google"
             />
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input 
                 label="Role / Title" 
                 value={item.role} 
