@@ -7,7 +7,8 @@ import {
   Terminal,
   ChevronLeft,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  RefreshCcw
 } from 'lucide-react';
 import Button, { cn } from '../components/ui/Button';
 import Card from '../components/ui/Card';
@@ -39,7 +40,8 @@ const ResumeBuilder: React.FC = () => {
     removeExperience,
     addSkill,
     updateSkill,
-    removeSkill
+    removeSkill,
+    clearResume
   } = useResume();
 
   const [activeSection, setActiveSection] = useState<Section>('personal');
@@ -113,14 +115,22 @@ const ResumeBuilder: React.FC = () => {
         <p className="text-xl text-slate-500 font-medium leading-relaxed">
           Craft a professional, ATS-optimized resume in minutes with our specialized editor for students and graduates.
         </p>
-        <div className="flex gap-4 mt-4">
+        <div className="flex flex-wrap justify-center gap-4 mt-4">
            <Button 
-             variant="outline" 
-             className="h-12 px-8 rounded-xl font-bold border-slate-200"
+             variant="ghost" 
+             className="h-12 px-8 rounded-xl font-bold text-slate-500 hover:text-red-500"
+             onClick={clearResume}
+             icon={RefreshCcw}
+           >
+             Start From Scratch
+           </Button>
+           <Button 
+             variant="primary" 
+             className="h-12 px-8 rounded-xl font-bold"
              onClick={() => saveResume(data.personalInfo.fullName + ' Resume')}
              disabled={isSaving}
            >
-             {isSaving ? 'Saving...' : 'Save Resume'}
+             {isSaving ? 'Saving...' : 'Save Draft'}
            </Button>
         </div>
       </div>

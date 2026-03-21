@@ -46,12 +46,44 @@ const initialData: ResumeData = {
 export type TemplateType = 'modern' | 'classic' | 'minimal';
 
 export const useResume = () => {
-  const [data, setData] = useState<ResumeData>(initialData);
+  const user = AuthService.getCurrentUser();
+  const isPremium = user?.is_premium || false;
+
+  // Use a refined initial state that can be cleared
+  const [data, setData] = useState<ResumeData>(() => {
+    // If user is logged in, try to use their real info instead of dummy Alexander
+    if (user && user.email) {
+      return {
+        ...initialData,
+        personalInfo: {
+          ...initialData.personalInfo,
+          fullName: user.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : (user.email.split('@')[0]),
+          email: user.email,
+          phone: '',
+          location: ''
+        },
+        // Optionally clear the dummy sections if user is logged in for first time
+        education: [],
+        experience: [],
+        skills: []
+      };
+    }
+    return initialData;
+  });
+
   const [template, setTemplate] = useState<TemplateType>('modern');
   const [isSaving, setIsSaving] = useState(false);
   
-  const user = AuthService.getCurrentUser();
-  const isPremium = user?.is_premium || false;
+  const clearResume = useCallback(() => {
+    if (window.confirm('Are you sure you want to clear all data and start from scratch?')) {
+        setData({
+          personalInfo: { fullName: '', email: '', phone: '', location: '' },
+          education: [],
+          experience: [],
+          skills: []
+        });
+    }
+  }, []);
 
   const upgradeToPremium = useCallback(async () => {
     try {
@@ -173,6 +205,7 @@ export const useResume = () => {
     removeExperience,
     addSkill,
     updateSkill,
-    removeSkill
+    removeSkill,
+    clearResume
   };
 };

@@ -4,7 +4,8 @@ import {
   Layout as LayoutIcon,
   Lock,
   Sparkles,
-  Loader2
+  Loader2,
+  Eye
 } from 'lucide-react';
 // @ts-ignore
 import html2pdf from 'html2pdf.js';
@@ -61,8 +62,10 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
 
     try {
       await html2pdf().set(opt).from(element).save();
+      // Optional: alert('Resume downloaded successfully!');
     } catch (error) {
       console.error('PDF Generation failed:', error);
+      alert('Failed to generate PDF. Please try a different browser or check your connection.');
     } finally {
       setIsDownloading(false);
     }
@@ -124,11 +127,14 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
       </Card>
 
       <div className="relative group">
+        <div className="flex items-center gap-4 mb-4 ml-6 uppercase tracking-[0.3em] text-[0.65rem] font-bold text-slate-400">
+           <Eye size={12} /> Live Resume Preview
+        </div>
         <div ref={resumeRef} className={cn(
           "transition-all duration-700",
           isLocked ? "blur-xl grayscale scale-[0.98] pointer-events-none select-none opacity-40" : ""
         )}>
-          <Card className="bg-white min-h-[1000px] p-20 rounded-[3.5rem] shadow-2xl relative overflow-hidden isolate ring-8 ring-primary-50/50">
+          <Card className="bg-white min-h-[1100px] p-20 rounded-[3.5rem] shadow-2xl relative overflow-hidden isolate ring-1 ring-slate-100">
             {renderTemplate()}
           </Card>
         </div>
