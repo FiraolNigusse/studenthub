@@ -22,8 +22,15 @@ const AdUnit: React.FC<AdUnitProps> = ({
     if (initialized.current) return;
 
     const pushAd = () => {
+      if (initialized.current) return;
       if (!adRef.current || adRef.current.offsetWidth === 0) return;
       
+      const ins = adRef.current.querySelector('ins.adsbygoogle');
+      if (ins && ins.getAttribute('data-adsbygoogle-status')) {
+        initialized.current = true;
+        return;
+      }
+
       try {
         // @ts-ignore
         (window.adsbygoogle = window.adsbygoogle || []).push({});

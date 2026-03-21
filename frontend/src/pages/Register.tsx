@@ -32,14 +32,29 @@ const Register: React.FC = () => {
         await AuthService.register(formData);
         navigate('/resume');
       } catch (err: any) {
+        console.error('Registration error details:', err.response?.data);
         const errors = err.response?.data;
         if (errors) {
-            // Get the first error from any field
-            const firstError = Object.values(errors)[0];
-            const message = Array.isArray(firstError) ? firstError[0] : (typeof firstError === 'string' ? firstError : 'Registration failed.');
-            setError(message);
+            // Priority 1: non_field_errors
+            if (errors.non_field_errors) {
+                setError(Array.isArray(errors.non_field_errors) ? errors.non_field_errors[0] : errors.non_field_errors);
+            } else if (typeof errors === 'string') {
+                setError(errors);
+            } else {
+                // Priority 2: first available field error
+                const errorEntries = Object.entries(errors);
+                if (errorEntries.length > 0) {
+                    const [field, firstError] = errorEntries[0];
+                    const message = Array.isArray(firstError) ? firstError[0] : (typeof firstError === 'string' ? firstError : 'Registration failed.');
+                    // Prepend field name if it's not 'detail' or 'password' related (for better context)
+                    const prefix = (field !== 'detail' && field !== 'password' && field !== 'password2') ? `${field.replace('_', ' ')}: ` : '';
+                    setError(prefix + message);
+                } else {
+                    setError('Registration failed. Please check your data.');
+                }
+            }
         } else {
-            setError('Registration failed. Please try again.');
+            setError(err.message || 'Registration failed. Please check your connection.');
         }
       } finally {
       setIsLoading(false);
