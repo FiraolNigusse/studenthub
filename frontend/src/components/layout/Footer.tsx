@@ -19,8 +19,8 @@ const Footer: React.FC = () => {
   ];
 
   const productLinks = [
-    { name: 'GPA Calculator', href: '/gpa' },
-    { name: 'Resume Builder', href: '/resume' },
+    { name: 'GPA Calculator', href: '/gpa-calculator' },
+    { name: 'Resume Builder', href: '/resume-builder' },
     { name: 'Templates', href: '/templates' },
     { name: 'Blog & Tips', href: '/blog' }
   ];

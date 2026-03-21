@@ -33,8 +33,8 @@ const Home: React.FC = () => {
             From GPA tracking to professional resume building, we've got you covered.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start mb-16">
-            <Link to="/resume">
+          <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start mb-8">
+            <Link to="/resume-builder">
               <Button size="lg" className="px-10 h-16 text-lg tracking-tight w-full sm:w-auto">
                 Get Started for Free <ArrowRight size={22} className="ml-1" />
               </Button>
@@ -43,6 +43,13 @@ const Home: React.FC = () => {
               <Button variant="outline" size="lg" className="h-16 px-10 text-lg border-slate-200 hover:border-primary-200 w-full sm:w-auto">
                 Explore Templates
               </Button>
+            </Link>
+          </div>
+          
+          <div className="flex justify-center lg:justify-start mb-16">
+            <Link to="/how-to-calculate-gpa" className="group flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-primary-600 transition-colors">
+               <span className="w-8 h-px bg-slate-200 group-hover:bg-primary-500 transition-colors" />
+               Learn how GPA works <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
           

@@ -21,8 +21,8 @@ const Navbar: React.FC = () => {
   
   const navLinks = [
     { name: 'Home', path: '/', icon: <HomeIcon size={18} /> },
-    { name: 'GPA Calculator', path: '/gpa', icon: <Calculator size={18} /> },
-    { name: 'Resume Builder', path: '/resume', icon: <FileText size={18} /> },
+    { name: 'GPA Calculator', path: '/gpa-calculator', icon: <Calculator size={18} /> },
+    { name: 'Resume Builder', path: '/resume-builder', icon: <FileText size={18} /> },
     { name: 'Templates', path: '/templates', icon: <LayoutIcon size={18} /> },
     { name: 'Blog', path: '/blog', icon: <BookOpen size={18} /> },
   ];

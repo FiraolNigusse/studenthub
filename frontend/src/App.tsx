@@ -6,6 +6,7 @@ import ResumeBuilder from './pages/ResumeBuilder';
 import Templates from './pages/Templates';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import GPAGuide from './pages/GPAGuide';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PaymentSuccess from './pages/PaymentSuccess';
@@ -17,11 +18,12 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/gpa" element={<GPACalculator />} />
-          <Route path="/resume" element={<ResumeBuilder />} />
+          <Route path="/gpa-calculator" element={<GPACalculator />} />
+          <Route path="/resume-builder" element={<ResumeBuilder />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/how-to-calculate-gpa" element={<GPAGuide />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/payment/success" element={<PaymentSuccess />} />
