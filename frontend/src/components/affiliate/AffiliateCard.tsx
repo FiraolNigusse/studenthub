@@ -74,7 +74,11 @@ const AffiliateCard: React.FC<AffiliateCardProps> = ({
         </p>
 
         <a href={link} target="_blank" rel="noopener noreferrer">
-          <Button size="md" variant="outline" className="w-full h-14 rounded-2xl gap-3 font-extrabold border-slate-100 group-hover:bg-primary-600 group-hover:text-white group-hover:border-primary-600 group-hover:shadow-xl group-hover:shadow-primary-500/20">
+          <Button 
+            size="md" 
+            variant="outline" 
+            className="w-full h-14 rounded-2xl gap-3 font-extrabold border-slate-100 group-hover:bg-primary-600 group-hover:text-white group-hover:border-primary-600 group-hover:shadow-xl group-hover:shadow-primary-500/20 hover:bg-primary-700 hover:text-white transition-all"
+          >
             Check it out <ArrowRight size={18} />
           </Button>
         </a>
