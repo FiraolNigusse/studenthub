@@ -43,9 +43,11 @@ class CreateCheckoutSessionView(APIView):
         if not price_id:
             return Response({'error': 'No Stripe Price ID configured.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        payment_mode = config('STRIPE_PAYMENT_MODE', default='payment')
-
         try:
+            # Auto-detect mode by fetching the price from Stripe
+            price = stripe.Price.retrieve(price_id)
+            payment_mode = 'subscription' if price.type == 'recurring' else 'payment'
+
             checkout_session = stripe.checkout.Session.create(
                 customer=user.stripe_customer_id,
                 payment_method_types=['card'],
