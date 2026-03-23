@@ -112,7 +112,7 @@ const GPAGuide: React.FC = () => {
             </div>
             <GPAWidget />
             <div className="flex justify-center pt-4">
-              <Link to="/gpa">
+              <Link to="/gpa-calculator">
                 <Button size="lg" className="px-12 h-16 rounded-2xl shadow-xl shadow-primary-600/10">
                   Open Full Calculator <ArrowRight size={20} className="ml-2" />
                 </Button>
