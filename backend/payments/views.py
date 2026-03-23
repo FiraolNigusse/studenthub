@@ -11,9 +11,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Payment
 from .serializers import CreateCheckoutSessionSerializer
 
-stripe.api_key = config('STRIPE_SECRET_KEY', default='')
-
-
 class CreateCheckoutSessionView(APIView):
     """
     Creates a Stripe Checkout Session for the authenticated user
@@ -22,6 +19,8 @@ class CreateCheckoutSessionView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        stripe.api_key = config('STRIPE_SECRET_KEY', default='')
+        
         serializer = CreateCheckoutSessionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -29,14 +28,20 @@ class CreateCheckoutSessionView(APIView):
 
         # Create or retrieve Stripe customer
         if not user.stripe_customer_id:
-            customer = stripe.Customer.create(
-                email=user.email,
-                metadata={'user_id': user.id},
-            )
-            user.stripe_customer_id = customer.id
-            user.save(update_fields=['stripe_customer_id'])
+            try:
+                customer = stripe.Customer.create(
+                    email=user.email,
+                    metadata={'user_id': user.id},
+                )
+                user.stripe_customer_id = customer.id
+                user.save(update_fields=['stripe_customer_id'])
+            except stripe.error.StripeError as e:
+                return Response({'error': f'Customer creation failed: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
 
         price_id = serializer.validated_data.get('price_id') or config('STRIPE_PRICE_ID', default='')
+
+        if not price_id:
+            return Response({'error': 'No Stripe Price ID configured.'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             checkout_session = stripe.checkout.Session.create(
@@ -71,6 +76,11 @@ class CreateCheckoutSessionView(APIView):
             return Response(
                 {'error': str(e)},
                 status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception as e:
+            return Response(
+                {'error': f'An unexpected error occurred: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
 

@@ -6,7 +6,7 @@ const ResumeService = {
    * List all resumes for the authenticated user.
    */
   async listResumes(): Promise<Resume[]> {
-    const response = await api.get('/resumes/');
+    const response = await api.get('resumes/');
     return response.data;
   },
 
@@ -14,7 +14,7 @@ const ResumeService = {
    * Create a new resume.
    */
   async createResume(data: CreateResumeData): Promise<Resume> {
-    const response = await api.post('/resumes/', data);
+    const response = await api.post('resumes/', data);
     return response.data;
   },
 
@@ -22,7 +22,7 @@ const ResumeService = {
    * Retrieve a specific resume by ID.
    */
   async getResume(id: number): Promise<Resume> {
-    const response = await api.get(`/resumes/${id}/`);
+    const response = await api.get(`resumes/${id}/`);
     return response.data;
   },
 
@@ -30,7 +30,7 @@ const ResumeService = {
    * Full update for a resume by ID.
    */
   async updateResume(id: number, data: UpdateResumeData): Promise<Resume> {
-    const response = await api.put(`/resumes/${id}/`, data);
+    const response = await api.put(`resumes/${id}/`, data);
     return response.data;
   },
 
@@ -38,7 +38,7 @@ const ResumeService = {
    * Partial update for a resume by ID.
    */
   async patchResume(id: number, data: UpdateResumeData): Promise<Resume> {
-    const response = await api.patch(`/resumes/${id}/`, data);
+    const response = await api.patch(`resumes/${id}/`, data);
     return response.data;
   },
 
@@ -46,7 +46,7 @@ const ResumeService = {
    * Delete a resume by ID.
    */
   async deleteResume(id: number): Promise<void> {
-    await api.delete(`/resumes/${id}/`);
+    await api.delete(`resumes/${id}/`);
   }
 };
 

@@ -3,7 +3,7 @@ import type { LoginCredentials, RegisterData, AuthResponse, User } from '../type
 
 const AuthService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await api.post('/auth/login/', credentials);
+    const response = await api.post('auth/login/', credentials);
     const { tokens, user } = response.data;
     
     localStorage.setItem('access_token', tokens.access);
@@ -22,7 +22,7 @@ const AuthService = {
       last_name: data.last_name
     };
     console.log('Registering with payload:', payload);
-    const response = await api.post('/auth/register/', payload);
+    const response = await api.post('auth/register/', payload);
     const { tokens, user } = response.data;
     
     localStorage.setItem('access_token', tokens.access);
@@ -52,7 +52,7 @@ const AuthService = {
   },
 
   async getMe(): Promise<User> {
-    const response = await api.get('/auth/me/');
+    const response = await api.get('auth/me/');
     localStorage.setItem('user', JSON.stringify(response.data));
     return response.data;
   },

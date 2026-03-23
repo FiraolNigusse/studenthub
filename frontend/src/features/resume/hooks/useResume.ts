@@ -96,9 +96,10 @@ export const useResume = () => {
     try {
       const { checkout_url } = await PaymentService.createCheckoutSession();
       window.location.href = checkout_url;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to start checkout:', error);
-      alert('Could not initiate checkout. Please try again or sign in.');
+      const errorMsg = error.response?.data?.error || error.response?.data?.detail || error.message;
+      alert(`Could not initiate checkout: ${errorMsg}. Please try again or sign in.`);
     }
   }, []);
 

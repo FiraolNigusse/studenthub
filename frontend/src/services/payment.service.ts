@@ -7,7 +7,7 @@ const PaymentService = {
    * After success, Stripe will redirect back to the app.
    */
   async createCheckoutSession(params?: CheckoutSessionParams): Promise<CheckoutSessionResponse> {
-    const response = await api.post('/payments/create-checkout-session/', params || {});
+    const response = await api.post('payments/create-checkout-session/', params || {});
     return response.data;
   },
 
