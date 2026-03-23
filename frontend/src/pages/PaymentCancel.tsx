@@ -24,7 +24,7 @@ const PaymentCancel: React.FC = () => {
            </p>
            
            <div className="flex flex-col gap-4">
-              <Button size="lg" className="w-full h-16 rounded-2xl text-xl font-black shadow-xl shadow-primary-500/20" onClick={() => navigate('/resume')}>
+              <Button size="lg" className="w-full h-16 rounded-2xl text-xl font-black shadow-xl shadow-primary-500/20" onClick={() => navigate('/resume-builder')}>
                  Return to Builder
               </Button>
               <Button variant="ghost" size="lg" className="w-full h-16 rounded-2xl font-bold flex items-center justify-center gap-3">

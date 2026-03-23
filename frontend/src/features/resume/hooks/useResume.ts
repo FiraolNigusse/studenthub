@@ -48,7 +48,7 @@ export type TemplateType = 'modern' | 'classic' | 'minimal';
 
 export const useResume = () => {
   const user = AuthService.getCurrentUser();
-  const isPremium = user?.is_premium || false;
+  const [isPremium, setIsPremium] = useState(user?.is_premium || false);
 
   // Use a refined initial state that can be cleared
   const [data, setData] = useState<ResumeData>(() => {
@@ -88,6 +88,11 @@ export const useResume = () => {
   }, []);
 
   const upgradeToPremium = useCallback(async () => {
+    if (!AuthService.isAuthenticated()) {
+      // Redirect to login, then bring them back to the resume builder
+      window.location.href = '/login?redirect=/resume-builder';
+      return;
+    }
     try {
       const { checkout_url } = await PaymentService.createCheckoutSession();
       window.location.href = checkout_url;
@@ -208,6 +213,15 @@ export const useResume = () => {
     addSkill,
     updateSkill,
     removeSkill,
-    clearResume
+    clearResume,
+    // New function to refresh user premium status
+    refreshUser: async () => {
+      try {
+        const refreshed = await AuthService.getMe();
+        setIsPremium(refreshed.is_premium || false);
+      } catch (e) {
+        console.error('Failed to refresh user after upgrade', e);
+      }
+    }
   };
 };

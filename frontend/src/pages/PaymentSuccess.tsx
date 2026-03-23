@@ -50,7 +50,7 @@ const PaymentSuccess: React.FC = () => {
                 </li>
               ))}
            </ul>
-           <Button className="w-full h-16 rounded-2xl text-xl font-black shadow-xl shadow-primary-500/20" onClick={() => navigate('/resume')}>
+           <Button className="w-full h-16 rounded-2xl text-xl font-black shadow-xl shadow-primary-500/20" onClick={() => navigate('/resume-builder')}>
               Start Building <ArrowRight size={24} className="ml-2" />
            </Button>
         </Card>

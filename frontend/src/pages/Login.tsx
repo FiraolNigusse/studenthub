@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { LogIn, Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -8,6 +8,8 @@ import { AuthService } from '../services';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get('redirect') || '/resume-builder';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +22,7 @@ const Login: React.FC = () => {
 
       try {
         await AuthService.login({ email, password });
-        navigate('/resume');
+        navigate(redirectTo);
       } catch (err: any) {
         setError(err.response?.data?.detail || 'Invalid email or password. Please try again.');
       } finally {

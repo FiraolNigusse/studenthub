@@ -31,7 +31,7 @@ const Register: React.FC = () => {
       try {
         console.log('Attempting registration with:', formData);
         await AuthService.register(formData);
-        navigate('/resume');
+        navigate('/resume-builder');
       } catch (err: any) {
         console.error('Registration error details:', err.response?.data || err);
         const errors = err.response?.data;
