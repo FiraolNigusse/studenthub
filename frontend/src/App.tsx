@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentCancel from './pages/PaymentCancel';
+import BestStudyBooks from './pages/BestStudyBooks';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/payment/cancel" element={<PaymentCancel />} />
+          <Route path="/best-books-for-students-to-improve-focus" element={<BestStudyBooks />} />
         </Routes>
       </Layout>
     </Router>

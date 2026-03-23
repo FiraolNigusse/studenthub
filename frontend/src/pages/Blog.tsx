@@ -6,7 +6,8 @@ import {
   Sparkles,
   TrendingUp,
   Award,
-  ArrowRight
+  ArrowRight,
+  BookOpen
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Button, { cn } from '../components/ui/Button';
@@ -48,6 +49,17 @@ const Blog: React.FC = () => {
       tag: 'Academic',
       icon: <Award size={16} />,
       color: 'bg-blue-50 text-blue-600'
+    },
+    {
+      id: 4,
+      slug: '../best-books-for-students-to-improve-focus',
+      title: 'Best Books for Students (Improve Focus & Productivity)',
+      excerpt: 'Struggle with focusing while studying? These 3 books are scientifically proven to help students master deep work and concentration.',
+      date: 'Mar 20, 2026',
+      readTime: '8 min read',
+      tag: 'Study Skills',
+      icon: <BookOpen size={16} />,
+      color: 'bg-primary-50 text-primary-600'
     }
   ];
 
