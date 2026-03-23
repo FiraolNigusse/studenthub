@@ -43,6 +43,8 @@ class CreateCheckoutSessionView(APIView):
         if not price_id:
             return Response({'error': 'No Stripe Price ID configured.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        payment_mode = config('STRIPE_PAYMENT_MODE', default='payment')
+
         try:
             checkout_session = stripe.checkout.Session.create(
                 customer=user.stripe_customer_id,
@@ -51,7 +53,7 @@ class CreateCheckoutSessionView(APIView):
                     'price': price_id,
                     'quantity': 1,
                 }],
-                mode='payment',
+                mode=payment_mode,
                 success_url = config('FRONTEND_URL', default='http://localhost:5173') + '/payment/success?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url = config('FRONTEND_URL', default='http://localhost:5173') + '/payment/cancel',
                 metadata={
